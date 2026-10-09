@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm test
+      - run: git diff --exit-code dist/nlpplus.es.js dist/nlpplus.cjs dist/nlpplus.js
+
+  extra-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: highlightjs/highlight.js
+      - uses: actions/checkout@v4
+        with:
+          path: extra/highlightjs-nlpplus
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: node tools/build.js -t cdn
+      - run: git -C extra/highlightjs-nlpplus diff --exit-code dist/nlpplus.min.js dist/nlpplus.es.min.js

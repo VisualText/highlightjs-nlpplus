@@ -1,0 +1,53 @@
+###############################################
+# FILE: money
+# SUBJ: amounts of money in a sentence
+###############################################
+
+@PATH _ROOT _paragraph _sentence
+
+@POST
+S("value") = num(N("value",1)) * num(N("numeric",2));
+single();
+
+@RULES
+_money <-
+	_money			### (1)
+	_number			### (2)
+	_currency [opt]	### (3)
+	@@
+
+@CHECK
+or(1,2);
+@RULES
+_asset <-
+	in [s]	### (1)
+	next	### (2)
+	cash	### (3)
+	@@
+
+@PRE
+<1,1> uppercase();
+@POST
+L("con") = getconcept(G("caps"),N("$text"));
+AddUniqueStr(L("con"),"type","abbrev");
+singler(1,1);
+@RULES
+_name [base] <-
+	_xWILD [min=2 match=(_xCAP _xNUM)]	### (1)
+	\.		### (2)
+	_xEND
+	@@
+
+@DECL
+/* Add a value only once. */
+AddUniqueStr(L("con"), L("attr"), L("value")) {
+	if (L("value") && !attrwithval(L("con"), L("attr"), L("value"))) {
+		addstrval(L("con"), L("attr"), L("value"));
+	} else {
+		"output.txt" << "seen: \"" << L("value") << "\"\n";
+	}
+	while (L("i") < 10.5)
+		L("i")++;
+	return 0;
+}
+@@DECL

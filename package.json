@@ -1,0 +1,52 @@
+{
+  "name": "highlightjs-nlpplus",
+  "version": "1.0.0",
+  "description": "NLP++ language grammar for highlight.js",
+  "type": "module",
+  "main": "dist/nlpplus.cjs",
+  "module": "dist/nlpplus.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/nlpplus.es.js",
+      "require": "./dist/nlpplus.cjs"
+    }
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "pretest": "npm run build",
+    "test": "mocha",
+    "test-markup": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VisualText/highlightjs-nlpplus.git"
+  },
+  "keywords": [
+    "highlight.js",
+    "highlightjs",
+    "syntax",
+    "nlp++",
+    "nlpplus",
+    "visualtext"
+  ],
+  "author": "David de Hilster <dehilster@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VisualText/highlightjs-nlpplus/issues"
+  },
+  "homepage": "https://github.com/VisualText/highlightjs-nlpplus",
+  "peerDependencies": {
+    "highlight.js": "^11.11.0"
+  },
+  "devDependencies": {
+    "glob": "^11.0.0",
+    "highlight.js": "^11.11.1",
+    "mocha": "^11.2.2",
+    "rollup": "^4.0.2",
+    "should": "^13.2.3"
+  }
+}

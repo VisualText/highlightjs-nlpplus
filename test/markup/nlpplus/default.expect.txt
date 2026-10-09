@@ -1,0 +1,53 @@
+<span class="hljs-comment">###############################################</span>
+<span class="hljs-comment"># FILE: money</span>
+<span class="hljs-comment"># SUBJ: amounts of money in a sentence</span>
+<span class="hljs-comment">###############################################</span>
+
+<span class="hljs-meta">@PATH</span> <span class="hljs-variable constant_">_ROOT</span> <span class="hljs-type">_paragraph</span> <span class="hljs-type">_sentence</span>
+
+<span class="hljs-meta">@POST</span>
+<span class="hljs-variable language_">S</span>(<span class="hljs-string">&quot;value&quot;</span>) = <span class="hljs-built_in">num</span>(<span class="hljs-variable language_">N</span>(<span class="hljs-string">&quot;value&quot;</span>,<span class="hljs-number">1</span>)) * <span class="hljs-built_in">num</span>(<span class="hljs-variable language_">N</span>(<span class="hljs-string">&quot;numeric&quot;</span>,<span class="hljs-number">2</span>));
+<span class="hljs-built_in">single</span>();
+
+<span class="hljs-meta">@RULES</span>
+<span class="hljs-type">_money</span> <span class="hljs-operator">&lt;-</span>
+	<span class="hljs-type">_money</span>			<span class="hljs-comment">### (1)</span>
+	<span class="hljs-type">_number</span>			<span class="hljs-comment">### (2)</span>
+	<span class="hljs-type">_currency</span> [<span class="hljs-attr">opt</span>]	<span class="hljs-comment">### (3)</span>
+	<span class="hljs-meta">@@</span>
+
+<span class="hljs-meta">@CHECK</span>
+<span class="hljs-built_in">or</span>(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>);
+<span class="hljs-meta">@RULES</span>
+<span class="hljs-type">_asset</span> <span class="hljs-operator">&lt;-</span>
+	in [<span class="hljs-attr">s</span>]	<span class="hljs-comment">### (1)</span>
+	next	<span class="hljs-comment">### (2)</span>
+	cash	<span class="hljs-comment">### (3)</span>
+	<span class="hljs-meta">@@</span>
+
+<span class="hljs-meta">@PRE</span>
+&lt;<span class="hljs-number">1</span>,<span class="hljs-number">1</span>&gt; <span class="hljs-built_in">uppercase</span>();
+<span class="hljs-meta">@POST</span>
+<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;con&quot;</span>) = <span class="hljs-built_in">getconcept</span>(<span class="hljs-variable language_">G</span>(<span class="hljs-string">&quot;caps&quot;</span>),<span class="hljs-variable language_">N</span>(<span class="hljs-string">&quot;$text&quot;</span>));
+<span class="hljs-title function_ invoke__">AddUniqueStr</span>(<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;con&quot;</span>),<span class="hljs-string">&quot;type&quot;</span>,<span class="hljs-string">&quot;abbrev&quot;</span>);
+<span class="hljs-built_in">singler</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>);
+<span class="hljs-meta">@RULES</span>
+<span class="hljs-type">_name</span> [<span class="hljs-attr">base</span>] <span class="hljs-operator">&lt;-</span>
+	<span class="hljs-variable constant_">_xWILD</span> [<span class="hljs-attr">min</span>=<span class="hljs-number">2</span> <span class="hljs-attr">match</span>=(<span class="hljs-variable constant_">_xCAP</span> <span class="hljs-variable constant_">_xNUM</span>)]	<span class="hljs-comment">### (1)</span>
+	<span class="hljs-char escape_">\.</span>		<span class="hljs-comment">### (2)</span>
+	<span class="hljs-variable constant_">_xEND</span>
+	<span class="hljs-meta">@@</span>
+
+<span class="hljs-meta">@DECL</span>
+<span class="hljs-comment">/* Add a value only once. */</span>
+<span class="hljs-title function_ invoke__">AddUniqueStr</span>(<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;con&quot;</span>), <span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;attr&quot;</span>), <span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;value&quot;</span>)) {
+	<span class="hljs-keyword">if</span> (<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;value&quot;</span>) &amp;&amp; !<span class="hljs-built_in">attrwithval</span>(<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;con&quot;</span>), <span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;attr&quot;</span>), <span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;value&quot;</span>))) {
+		<span class="hljs-built_in">addstrval</span>(<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;con&quot;</span>), <span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;attr&quot;</span>), <span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;value&quot;</span>));
+	} <span class="hljs-keyword">else</span> {
+		<span class="hljs-string">&quot;output.txt&quot;</span> &lt;&lt; <span class="hljs-string">&quot;seen: \&quot;&quot;</span> &lt;&lt; <span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;value&quot;</span>) &lt;&lt; <span class="hljs-string">&quot;\&quot;\n&quot;</span>;
+	}
+	<span class="hljs-keyword">while</span> (<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;i&quot;</span>) &lt; <span class="hljs-number">10.5</span>)
+		<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;i&quot;</span>)++;
+	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+<span class="hljs-meta">@@DECL</span>
