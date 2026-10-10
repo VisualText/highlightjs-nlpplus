@@ -2,7 +2,7 @@
 <span class="hljs-keyword">nlp</span>	<span class="hljs-title function_">KBFuncs</span>	<span class="hljs-comment"># Declare the knowledge base display and dump functions</span>
 <span class="hljs-keyword">nlp</span>	<span class="hljs-title function_">initKB</span>	<span class="hljs-comment"># Create the corporate, parse, and companies concepts and seed the known companies</span>
 <span class="hljs-keyword">nlp</span>	<span class="hljs-title function_">join</span>	<span class="hljs-comment"># Join numbers, years, and quoted text into single nodes</span>
-<span class="hljs-keyword">nlp</span>	<span class="hljs-title function_">sentences</span>	<span class="hljs-comment"># Cut the text into sentences and make a concept for each one</span>
+<span class="hljs-keyword">pat</span>	<span class="hljs-title function_">sentences</span>	<span class="hljs-comment"># Cut the text into sentences and make a concept for each one</span>
 <span class="hljs-keyword">nlp</span>	<span class="hljs-title function_">paragraphs</span>	<span class="hljs-comment"># Gather the sentences into paragraphs</span>
 <span class="hljs-keyword">nlp</span>	<span class="hljs-title function_">removeWhite</span>	<span class="hljs-comment"># Remove the white space tokens inside each sentence</span>
 <span class="hljs-keyword">stub</span>	<span class="hljs-title function_">words</span>	<span class="hljs-comment"># Start of the automatically generated word lookup passes</span>
@@ -15,6 +15,7 @@
 <span class="hljs-keyword">nlp</span>	<span class="hljs-title function_">phrases</span>	<span class="hljs-comment"># Recognize the domain phrases: officers, money types, and commentors</span>
 <span class="hljs-keyword">nlp</span>	<span class="hljs-title function_">money</span>	<span class="hljs-comment"># Recognize monetary amounts and compute their value</span>
 <span class="hljs-comment">/nlp	anaphoraSearch	# inactive: a leading slash switches a pass off</span>
+<span class="hljs-comment">// two slashes start a comment</span>
 <span class="hljs-comment">/* Passes that write the report.
    Kept last so they see the finished tree. */</span>
 <span class="hljs-keyword">nlp</span>	<span class="hljs-title function_">output</span>	<span class="hljs-comment"># Write the companies and events out as a report</span>
