@@ -39,15 +39,11 @@ function nlpplusDict(hljs) {
     contains: [
       hljs.HASH_COMMENT_MODE,
       hljs.C_BLOCK_COMMENT_MODE,
-      // the headword runs up to the first attribute name
+      // The headword: words separated by spaces, up to the first attribute
+      // name. Words and spaces never overlap, so there is no backtracking.
       {
         scope: 'title',
-        match: /^[^\s#=/][^=\n]*?(?=\s+[\w-]+\s*=)/
-      },
-      // a headword with no attributes
-      {
-        scope: 'title',
-        match: /^[^\s#=/][^=\n]*$/
+        match: /^[^\s#/=][^\s=]*(?:[ \t]+(?![\w-]+[ \t]*=)[^\s=]+)*/
       },
       {
         scope: 'attr',
