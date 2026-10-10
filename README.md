@@ -1,6 +1,7 @@
 # highlightjs-nlpplus
 
-[NLP++](https://visualtext.org/nlp/) language grammar for [highlight.js](https://highlightjs.org/).
+[NLP++](https://visualtext.org/nlp/) language grammars for [highlight.js](https://highlightjs.org/): pass files,
+and the dictionaries, knowledge bases, analyzer sequences and parse trees that go with them.
 
 NLP++ is a programming language for natural language processing. An analyzer is a sequence of
 passes; each pass matches pattern rules against a parse tree and runs code when a rule fires.
@@ -17,6 +18,18 @@ The grammar highlights:
 
 The language id is `nlpplus`, with the alias `nlp`.
 
+### The analyzer's other files
+
+| Language id | Files | Highlights |
+|---|---|---|
+| `nlpplus-dict` | `.dict` dictionaries | headwords, attribute names, quoted and bare values, numbers |
+| `nlpplus-kbb` (alias `kbb`) | `.kbb` knowledge bases | top-level and nested concepts, attributes, quoted values, `[lists]` |
+| `nlpplus-seq` | `analyzer.seq` | pass types, pass files, `nil`, inactive (`/`) passes, comments |
+| `nlpplus-tree` | `.tree` parse trees | built nodes and leaf tokens, offsets, node types, flags, variables, pass headers |
+
+Each is a separate file (`dist/nlpplus-dict.min.js`, ...) and a separate import
+(`highlightjs-nlpplus/dict`, `/kbb`, `/seq`, `/tree`), so a page loads only what it shows.
+
 ## Usage
 
 ### In a web page
@@ -26,6 +39,8 @@ Load the grammar after highlight.js. The CDN build registers itself.
 ```html
 <script src="/path/to/highlight.min.js"></script>
 <script src="/path/to/nlpplus.min.js"></script>
+<!-- and any of the other formats the page shows -->
+<script src="/path/to/nlpplus-kbb.min.js"></script>
 <script>hljs.highlightAll();</script>
 ```
 
@@ -51,6 +66,13 @@ import nlpplus from 'highlightjs-nlpplus';
 
 hljs.registerLanguage('nlpplus', nlpplus);
 hljs.highlightAll();
+```
+
+The other formats import the same way:
+
+```javascript
+import nlpplusKbb from 'highlightjs-nlpplus/kbb';
+hljs.registerLanguage('nlpplus-kbb', nlpplusKbb);
 ```
 
 CommonJS:

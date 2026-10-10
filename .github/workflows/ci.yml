@@ -14,7 +14,7 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npm test
-      - run: git diff --exit-code dist/nlpplus.es.js dist/nlpplus.cjs dist/nlpplus.js
+      - run: git diff --exit-code -- "dist/*.es.js" "dist/*.cjs" "dist/nlpplus*.js" ":!dist/*.min.js"
 
   extra-build:
     runs-on: ubuntu-latest
@@ -30,4 +30,4 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: node tools/build.js -t cdn
-      - run: git -C extra/highlightjs-nlpplus diff --exit-code dist/nlpplus.min.js dist/nlpplus.es.min.js
+      - run: git -C extra/highlightjs-nlpplus diff --exit-code -- "dist/*.min.js"

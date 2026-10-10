@@ -1,7 +1,7 @@
 {
   "name": "highlightjs-nlpplus",
-  "version": "1.0.0",
-  "description": "NLP++ language grammar for highlight.js",
+  "version": "1.1.0",
+  "description": "NLP++ language grammars for highlight.js: pass files, dictionaries, knowledge bases, analyzer sequences and parse trees",
   "type": "module",
   "main": "dist/nlpplus.cjs",
   "module": "dist/nlpplus.es.js",
@@ -9,6 +9,22 @@
     ".": {
       "import": "./dist/nlpplus.es.js",
       "require": "./dist/nlpplus.cjs"
+    },
+    "./dict": {
+      "import": "./dist/nlpplus-dict.es.js",
+      "require": "./dist/nlpplus-dict.cjs"
+    },
+    "./kbb": {
+      "import": "./dist/nlpplus-kbb.es.js",
+      "require": "./dist/nlpplus-kbb.cjs"
+    },
+    "./seq": {
+      "import": "./dist/nlpplus-seq.es.js",
+      "require": "./dist/nlpplus-seq.cjs"
+    },
+    "./tree": {
+      "import": "./dist/nlpplus-tree.es.js",
+      "require": "./dist/nlpplus-tree.cjs"
     }
   },
   "files": [
