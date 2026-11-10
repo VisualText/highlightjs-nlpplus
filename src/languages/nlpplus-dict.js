@@ -7,7 +7,8 @@ Category: config
 */
 
 export default function(hljs) {
-  // A value is a quoted string, a number, a bare word, or a [list, "of", values].
+  // A value is a quoted string, a number or a bare word. The reader has no list
+  // syntax: [a,b] is one string, brackets and commas included.
   const VALUES = [
     {
       scope: 'string',
@@ -17,16 +18,14 @@ export default function(hljs) {
       contains: [ hljs.BACKSLASH_ESCAPE ]
     },
     {
+      // the reader stores a value as a number only when it is all digits;
+      // -5 and 1.5 are strings
       scope: 'number',
-      match: /(?<=[=[,]\s*)-?\d+(?:\.\d+)?(?=[\s,\]]|$)/
+      match: /(?<==\s*)\d+(?=\s|$)/
     },
     {
       scope: 'string',
-      match: /(?<=[=[,]\s*)[^\s"[\],=]+/
-    },
-    {
-      scope: 'punctuation',
-      match: /[[\],]/
+      match: /(?<==\s*)[^\s"=]+/
     }
   ];
 
@@ -39,7 +38,7 @@ export default function(hljs) {
       // name. Words and spaces never overlap, so there is no backtracking.
       {
         scope: 'title',
-        match: /^[^\s#/=][^\s=]*(?:[ \t]+(?![\w-]+[ \t]*=)[^\s=]+)*/
+        match: /^[^\s#/=][^\s=#]*(?:[ \t]+(?![\w-]+[ \t]*=)[^\s=#]+)*/
       },
       {
         scope: 'attr',

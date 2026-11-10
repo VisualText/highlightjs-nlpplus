@@ -89,12 +89,20 @@ npm install
 npm test        # builds dist/ and runs the markup tests in test/markup/nlpplus
 ```
 
-The minified CDN files (`dist/nlpplus.min.js`, `dist/nlpplus.es.min.js`) are built with the
-highlight.js compiler. Put this repo in a highlight.js checkout's `extra/` folder and run
-`node tools/build.js -t cdn` there. Commit everything in `dist/`.
+The minified CDN files (`dist/*.min.js`, `dist/*.es.min.js`) are built with the
+highlight.js compiler, and the `extra-build` CI check fails if the committed ones differ
+from what it builds. Clone this repo, `src/` included, into a highlight.js checkout's
+`extra/` folder and run `node tools/build.js -t cdn` there. Commit everything in `dist/`.
 
-The list of built-in functions comes from the language data in the
-[VisualText extension for VS Code](https://github.com/VisualText/vscode-nlp).
+Check the names of the files it writes. If the build finds no `src/languages/` folder, it
+falls back to `main` in `package.json` and writes `dist/nlpplus.cjs.min.js`, which registers
+the language as `nlpplus.cjs`. Delete those files. When the `extra-build` check fails, its
+log ends with the exact `git diff` it expected. Save that diff from
+`gh run view <run> --log-failed` and `git apply` it to get the same files.
+
+The list of built-in functions is the engine's own name table: `nlpFuncs[]` in
+[nlp-engine `lite/funcs.h`](https://github.com/VisualText/nlp-engine/blob/master/lite/funcs.h).
+Built-in names are matched with exact case, as the engine does.
 
 ## Related
 

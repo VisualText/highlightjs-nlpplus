@@ -1,0 +1,7 @@
+_s <- \# _xWILD @@ # a real comment
+_x <- _xALPHA [one vareq=("pos" "noun") plus] @@
+_x <- _xWILD [one match=( \) \] \} )] @@
+_x <- _xWILD [match=(one look base s)] @@
+_34 <- hello @@
+_café <- world @@
+L("c") = G("y")[0];
