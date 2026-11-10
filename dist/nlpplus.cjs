@@ -13,68 +13,76 @@ Category: misc
 function nlpplus(hljs) {
   const regex = hljs.regex;
 
-  // Engine built-in functions, from the VisualText extension's language
-  // data. Highlighted only when called, because the same words (next, single,
-  // str, ...) also appear as literal text in @RULES. That list also carries the
-  // statements if/else/while/return, which have help pages of their own; here
-  // they are keywords, so they are left out of this list.
+  // Engine built-in functions: the engine's own name table (nlpFuncs[] in
+  // nlp-engine lite/funcs.h). Highlighted only when called, because the same
+  // words (next, single, str, ...) also appear as literal text in @RULES.
   const BUILTINS = [
-    'abs', 'addarg', 'addattr', 'addcnode', 'addconcept', 'addconval',
-    'addnode', 'addnumval', 'addstmt', 'addstrs', 'addstrval', 'addsval',
-    'addword', 'arraylength', 'attrchange', 'attrexists', 'attrname',
-    'attrtype', 'attrvals', 'attrwithval', 'batchstart', 'cap', 'cbuf',
-    'ceiling', 'closefile', 'conceptname', 'conceptpath', 'conval', 'cout',
-    'coutreset', 'dballocstmt', 'dbbindcol', 'dbclose', 'dbexec',
-    'dbexecstmt', 'dbfetch', 'dbfreestmt', 'dbopen', 'deaccent', 'debug',
-    'dictfindword', 'dictfirst', 'dictgetword', 'dictnext', 'down', 'eltnode',
-    'excise', 'exitpass', 'exittopopup', 'factorial', 'fail', 'fileout',
-    'findana', 'findattr', 'findattrs', 'findconcept', 'findhierconcept',
-    'findnode', 'findphrase', 'findroot', 'findvals', 'findwordpath',
-    'firstnode', 'floor', 'flt', 'fltval', 'fncallstart', 'fprintgvar',
-    'fprintnvar', 'fprintxvar', 'fprintvar', 'gdump', 'getconcept',
-    'getconval', 'getnumval', 'getpopupdata', 'getstrval', 'getsval', 'ginc',
+    'DICTphraselookup', 'LJ', 'abs', 'addarg', 'addattr', 'addcnode',
+    'addconcept', 'addconval', 'addnode', 'addnumval', 'addstmt', 'addstrs',
+    'addstrval', 'addsval', 'addword', 'adoptconcepts', 'arraylength',
+    'arrayreverse', 'arrayslice', 'arraysort', 'arrayunique', 'attrchange',
+    'attrexists', 'attrname', 'attrtype', 'attrvals', 'attrwithval',
+    'batchstart', 'callanalyzer', 'callconcept', 'cap', 'cbuf', 'ceiling',
+    'closefile', 'conceptname', 'conceptpath', 'conval', 'cout', 'coutreset',
+    'dballocstmt', 'dbbindcol', 'dbclose', 'dbexec', 'dbexecstmt', 'dbfetch',
+    'dbfreestmt', 'dbopen', 'deaccent', 'debug', 'dejunk', 'deletefile',
+    'dictfindword', 'dictfirst', 'dictgetword', 'dictnext', 'direxists',
+    'dirlist', 'down', 'eltnode', 'excise', 'exitpass', 'exittopopup',
+    'factorial', 'fail', 'fileexists', 'fileout', 'filesize', 'findana',
+    'findattr', 'findattrs', 'findconcept', 'findhierconcept', 'findnode',
+    'findphrase', 'findroot', 'findvals', 'findwordpath', 'firstnode',
+    'floor', 'flt', 'fltval', 'fncallstart', 'fprintgvar', 'fprintnvar',
+    'fprintvar', 'fprintxvar', 'gdump', 'getconcept', 'getconval',
+    'getfltval', 'getnumval', 'getpopupdata', 'getstrval', 'getsval', 'ginc',
     'gp', 'group', 'gtolower', 'guniq', 'hitconf', 'inc', 'inheritval',
-    'inputrange', 'inputrangetofile', 'interactive', 'kbdumptree',
-    'lasteltnode', 'lastnode', 'length', 'lengthr', 'levenshtein',
-    'lextagger', 'listadd', 'listnode', 'LJ', 'lj', 'log', 'logten', 'lookup',
-    'lowercase', 'makeconcept', 'makeparentconcept', 'makephrase', 'makestmt',
-    'merge', 'merger', 'mkdir', 'mod', 'movecleft', 'movecright', 'movesem',
-    'ndump', 'next', 'nextattr', 'nextval', 'ninc', 'nodeconcept',
+    'inputrange', 'inputrangetofile', 'interactive', 'isarray', 'iscon',
+    'isfloat', 'isnum', 'ispn', 'isstr', 'jsonparse', 'jsonwrite',
+    'kbdumptree', 'lasteltnode', 'lastnode', 'length', 'lengthr',
+    'levenshtein', 'lextagger', 'listadd', 'listnode', 'lj', 'loaddict',
+    'loadkbb', 'log', 'logten', 'look', 'lookup', 'lowercase', 'makeconcept',
+    'makeliteral', 'makeparentconcept', 'makephrase', 'makestmt', 'merge',
+    'merger', 'mkdir', 'mod', 'movecleft', 'moveconcept', 'movecright',
+    'movesem', 'ndump', 'next', 'nextattr', 'nextval', 'ninc', 'nodeconcept',
     'nodeowner', 'noop', 'num', 'numrange', 'numval', 'openfile', 'or',
     'pathconcept', 'percentstr', 'permuten', 'phraselength', 'phraseraw',
-    'phrasetext', 'pncopyvars', 'pndown', 'pninsert', 'pnmakevar', 'pnname',
-    'pnnext', 'pnprev', 'pnreplaceval', 'pnroot', 'pnsingletdown', 'pnup',
-    'pnvar', 'pnvarnames', 'pow', 'pranchor', 'prchild', 'preaction',
-    'printvar', 'pndeletechilds', 'pnrename', 'prev', 'print', 'printr',
-    'prlit', 'prrange', 'prtree', 'prunephrases', 'prxtree', 'randomint',
-    'regexp', 'regexpi', 'renameattr', 'renamechild', 'renameconcept',
-    'renamenode', 'replaceval', 'resolveurl', 'returnstmt', 'rfaaction',
-    'rfaactions', 'rfaarg', 'rfaargtolist', 'rfacode', 'rfaelement', 'rfaelt',
-    'rfaexpr', 'rfalist', 'rfalitelt', 'rfalittoaction', 'rfalittopair',
-    'rfaname', 'rfanodes', 'rfanonlit', 'rfanonlitelt', 'rfanum', 'rfaop',
-    'rfapair', 'rfapairs', 'rfapostunary', 'rfapres', 'rfarange',
-    'rfarecurse', 'rfarecurses', 'rfaregion', 'rfaregions', 'rfarule',
-    'rfarulelts', 'rfarulemark', 'rfarules', 'rfarulesfile', 'rfaselect',
-    'rfastr', 'rfasugg', 'rfaunary', 'rfavar', 'rfbarg', 'rfbdecl',
-    'rfbdecls', 'rightjustifynum', 'rmattr', 'rmattrs', 'rmattrval',
-    'rmchild', 'rmchildren', 'rmconcept', 'rmcphrase', 'rmnode', 'rmphrase',
-    'rmval', 'rmvals', 'rmword', 'round', 'sdump', 'setbase', 'setlookahead',
-    'setunsealed', 'single', 'singler', 'singlex', 'singlezap',
-    'sortconsbyattr', 'sortchilds', 'sorthier', 'sortphrase', 'sortvals',
-    'spellcandidates', 'spellcorrect', 'spellword', 'splice', 'split',
-    'sqlstr', 'sqrt', 'startout', 'stem', 'stopout', 'str', 'strchar',
-    'strchr', 'strchrcount', 'strclean', 'strcontains', 'strcontainsnocase',
-    'strendswith', 'strequal', 'strequalnocase', 'strescape', 'strunescape',
-    'strgreaterthan', 'strisalpha', 'strisdigit', 'strislower', 'strisupper',
-    'strlength', 'strlessthan', 'strnotequal', 'strnotequalnocase',
-    'strpiece', 'strrchr', 'strspellcandidate', 'strspellcompare',
-    'strstartswith', 'strsubst', 'strtolower', 'strtotitle', 'strtoupper',
-    'strtrim', 'strval', 'strwrap', 'succeed', 'suffix', 'system', 'take',
-    'today', 'topdir', 'truncate', 'unknown', 'unpackdirs', 'up', 'uppercase',
-    'urlbase', 'urltofile', 'var', 'vareq', 'varfn', 'varfnarray',
-    'varinlist', 'varne', 'varstrs', 'varz', 'wninit', 'wnsensestoconcept',
-    'wnhypnymstoconcept', 'whilestmt', 'wordindex', 'wordpath', 'writekb',
-    'xaddlen', 'xaddnvar', 'xdump', 'xinc', 'xmlstr', 'xrename'
+    'phrasetext', 'pncopyvars', 'pndeletechilds', 'pndown', 'pninsert',
+    'pnmakevar', 'pnmove', 'pnname', 'pnnext', 'pnprev', 'pnpush',
+    'pnpushval', 'pnremoveval', 'pnrename', 'pnreplaceval', 'pnroot',
+    'pnrpushval', 'pnsetfired', 'pnsingletdown', 'pntype', 'pnup', 'pnvar',
+    'pnvarnames', 'pnvartype', 'pow', 'pranchor', 'prchild', 'preaction',
+    'prev', 'print', 'printr', 'printvar', 'prlit', 'prrange', 'prtree',
+    'prunephrases', 'prxtree', 'push', 'randomint', 'readfile', 'readlines',
+    'refind', 'regexp', 'regexpi', 'rematch', 'renameattr', 'renamechild',
+    'renameconcept', 'renamenode', 'replaceval', 'resolveurl', 'resubst',
+    'returnstmt', 'rfaaction', 'rfaactions', 'rfaarg', 'rfaargtolist',
+    'rfacode', 'rfaelement', 'rfaelt', 'rfaexpr', 'rfalist', 'rfalitelt',
+    'rfalittoaction', 'rfalittopair', 'rfaname', 'rfanodes', 'rfanonlit',
+    'rfanonlitelt', 'rfanum', 'rfaop', 'rfapair', 'rfapairs', 'rfapostunary',
+    'rfapres', 'rfarange', 'rfarecurse', 'rfarecurses', 'rfaregion',
+    'rfaregions', 'rfarule', 'rfarulelts', 'rfarulemark', 'rfarules',
+    'rfarulesfile', 'rfaselect', 'rfastr', 'rfasugg', 'rfaunary', 'rfavar',
+    'rfaxvar', 'rfbarg', 'rfbdecl', 'rfbdecls', 'rightjustifynum', 'rmattr',
+    'rmattrs', 'rmattrval', 'rmchars', 'rmchild', 'rmchildren', 'rmconcept',
+    'rmcphrase', 'rmnode', 'rmphrase', 'rmval', 'rmvals', 'rmword', 'round',
+    'sdump', 'setbase', 'setlookahead', 'setunsealed', 'single', 'singler',
+    'singlex', 'singlezap', 'sortattrs', 'sortchilds', 'sortconsbyattr',
+    'sorthier', 'sortphrase', 'sortvals', 'spellcandidates', 'spellcorrect',
+    'spellword', 'splice', 'split', 'sqlstr', 'sqrt', 'startout', 'stem',
+    'stopout', 'str', 'strchar', 'strchr', 'strchrcount', 'strclean',
+    'strcontains', 'strcontainsnocase', 'strendswith', 'strequal',
+    'strequalnocase', 'strescape', 'strgreaterthan', 'strhaspunct',
+    'strindexof', 'strisalpha', 'striscaps', 'strisdigit', 'strislower',
+    'strisupper', 'strjoin', 'strlastindexof', 'strlength', 'strlessthan',
+    'strnotequal', 'strnotequalnocase', 'strpiece', 'strrchr',
+    'strspellcandidate', 'strspellcompare', 'strstartswith', 'strsubst',
+    'strtolower', 'strtotitle', 'strtoupper', 'strtrim', 'strunescape',
+    'struniquechars', 'strval', 'strwrap', 'succeed', 'suffix', 'system',
+    'take', 'today', 'topdir', 'truncate', 'unknown', 'unpackdirs', 'up',
+    'uppercase', 'urlbase', 'urltofile', 'var', 'vareq', 'varfn',
+    'varfnarray', 'vargt', 'varinlist', 'varlt', 'varne', 'varstrs', 'varz',
+    'wnhypnymstoconcept', 'wninit', 'wnsensestoconcept', 'wordindex',
+    'wordpath', 'writekb', 'xaddlen', 'xaddnvar', 'xdump', 'xinc', 'xmlstr',
+    'xrename'
   ];
 
   // Region markers structure every pass: @RULES holds the pattern rules,
@@ -82,7 +90,7 @@ function nlpplus(hljs) {
   // The closing form is @@RULES, @@CODE, ...; a bare @@ ends one rule.
   const REGION = {
     scope: 'meta',
-    match: /@@?(?:CHECK|CODE|DECL|GROUP|MULTI|NODES|PATH|POST|PRE|RECURSE|RULES|SELECT)\b|@@/
+    match: /@@?(?:CHECK|CODE|DECL|MULTI|NODES|PATH|POST|POSTCODE|PRE|RECURSE|RULES|SELECT)\b|@@/
   };
 
   // Special node names that match classes of text: _xWILD, _xALPHA, ...
@@ -115,11 +123,22 @@ function nlpplus(hljs) {
     match: regex.concat(/\b/, regex.either(...BUILTINS), /(?=\s*\()/)
   };
 
+  // Function names are case-sensitive in the engine (AddWord is not the
+  // built-in addword), but the statements if/else/while/return are not, so the
+  // grammar is case-sensitive and the keywords spell out both cases.
+  const anyCase = (word) => word.replace(/[a-z]/g, (c) => `[${c}${c.toUpperCase()}]`);
+  const STATEMENTS = [ 'if', 'else', 'while', 'return' ].map(anyCase).join('|');
+
+  const KEYWORD = {
+    scope: 'keyword',
+    match: new RegExp(`\\b(?:${STATEMENTS})\\b`)
+  };
+
   // Any other call. The statements are excluded so `if (` and `while (` stay
   // keywords.
   const FUNCTION_CALL = {
     scope: 'title.function.invoke',
-    match: /\b(?!(?:if|else|while|return)\b)[A-Za-z]\w*(?=\s*\()/
+    match: new RegExp(`\\b(?!(?:${STATEMENTS})\\b)[A-Za-z]\\w*(?=\\s*\\()`)
   };
 
   const COMMENTS = [
@@ -137,12 +156,16 @@ function nlpplus(hljs) {
     begin: /\[/,
     end: /\]/,
     keywords: {
+      // The keys the engine accepts (nlp-engine lite/ielt.cpp).
       attr: [
-        'attr', 'attrs', 'base', 'da', 'deacc', 'deaccent', 'except', 'excepts', 'fail',
-        'fails', 'gp', 'group', 'layer', 'layers', 'look', 'lookahead', 'match',
-        'matches', 'max', 'min', 'nest', 'o', 'one', 'opt', 'option', 'optional',
-        'pass', 'passes', 'plus', 'recurse', 'ren', 'rename', 's', 'singlet',
-        'star', 't', 'tree', 'trig', 'trigger', 'unsealed'
+        'attr', 'attrs', 'base', 'cap', 'da', 'dcc', 'deacc', 'deaccent', 'debug',
+        'dejunk', 'dj', 'except', 'excepts', 'fail', 'fails', 'gp', 'group', 'layer',
+        'layers', 'length', 'lengthr', 'look', 'lookahead', 'lowercase', 'match',
+        'matches', 'max', 'min', 'nest', 'numrange', 'o', 'one', 'opt', 'option',
+        'optional', 'pass', 'passes', 'plus', 'recurse', 'regexp', 'regexpi', 'ren',
+        'rename', 's', 'singlet', 'star', 't', 'tree', 'trig', 'trigger', 'unknown',
+        'unsealed', 'uppercase', 'var', 'vareq', 'vargt', 'varlt', 'varne', 'varz',
+        'xs', 'xsinglet', 'xt', 'xtree'
       ]
     },
     contains: [
@@ -161,13 +184,10 @@ function nlpplus(hljs) {
   return {
     name: 'NLP++',
     aliases: [ 'nlp' ],
-    case_insensitive: true,
-    keywords: {
-      keyword: [ 'if', 'else', 'while', 'return' ]
-    },
     contains: [
       ...COMMENTS,
       REGION,
+      KEYWORD,
       {
         scope: 'operator',
         match: /<-/
