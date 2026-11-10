@@ -1,0 +1,6 @@
+<span class="hljs-keyword">tokenize</span>	<span class="hljs-literal">nil</span>
+<span class="hljs-keyword">zone</span>	<span class="hljs-title function_">_line</span>	<span class="hljs-comment"># a zone pass names the node to run inside</span>
+<span class="hljs-keyword">nlp</span>	<span class="hljs-title function_">inside</span>
+<span class="hljs-keyword">endzone</span>	<span class="hljs-literal">nil</span>
+<span class="hljs-keyword">nlp</span>	<span class="hljs-title function_">foo</span>	<span class="hljs-comment">// a // comment can follow a pass</span>
+<span class="hljs-comment">/nlp	off</span>

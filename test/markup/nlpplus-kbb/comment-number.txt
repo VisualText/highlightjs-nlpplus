@@ -1,0 +1,4 @@
+words # a comment after a concept
+  dog # another one
+  cat: count=3, code=007, neg=-5, f=1.5
+  $: name=[dollar,escudo]

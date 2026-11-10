@@ -15,8 +15,8 @@ var hljsNlpplusSeq = (function () {
     // Pass types the engine's sequence reader accepts; "pat" is read as "nlp".
     const PASS_TYPES = [
       'chartok', 'cmltok', 'cmltokenize', 'dicttok', 'dicttokz', 'end',
-      'folder', 'gen', 'genhash', 'hash', 'intern', 'line', 'lines', 'nintern',
-      'nlp', 'pat', 'python', 'rec', 'stub', 'tok', 'token', 'tokenize'
+      'endzone', 'folder', 'gen', 'genhash', 'hash', 'intern', 'line', 'lines', 'nintern',
+      'nlp', 'pat', 'python', 'rec', 'stub', 'tok', 'token', 'tokenize', 'zone'
     ];
     const PASS_TYPE = hljs.regex.either(...PASS_TYPES);
 
@@ -26,8 +26,12 @@ var hljsNlpplusSeq = (function () {
       contains: [
         hljs.HASH_COMMENT_MODE,
         hljs.C_BLOCK_COMMENT_MODE,
-        // a lone slash at the start of a line switches the pass off, and two
-        // start a comment
+        // like #, a // comment can start anywhere on the line
+        {
+          scope: 'comment',
+          match: /\/\/.*$/
+        },
+        // a lone slash at the start of a line switches the pass off
         {
           scope: 'comment',
           match: /^\/(?!\*).*$/

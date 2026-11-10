@@ -1,0 +1,3 @@
+foo # a comment after a headword
+bar n=12 neg=-5 f=1.5 q="7"
+ca iso=2 language=[catalan,valencian]

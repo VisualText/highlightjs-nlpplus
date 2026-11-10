@@ -95,10 +95,11 @@ export default function(hljs) {
     match: /\b_(?:xALPHA|xANY|xBLANK|xCAP|xCAPLET|xCTRL|xEMOJI|xEND|xEOF|xLET|xNIL|xNUM|xPUNCT|xSTART|xVAR|xWHITE|xWILD|ROOT)\b/
   };
 
-  // Every other leading-underscore name is a parse-tree node (_noun, _money).
+  // Every other leading-underscore name is a parse-tree node (_noun, _money),
+  // and also _34 or _café: letters, digits and _ in any script.
   const NODE = {
     scope: 'type',
-    match: /\b_[A-Za-z]\w*/
+    match: /\b_[\p{L}\p{N}_]+/u
   };
 
   // A literal character in a rule is backslash-escaped: \. \, \- \(
@@ -165,6 +166,17 @@ export default function(hljs) {
       ]
     },
     contains: [
+      // A value list: match=(one two). Its words are literals, never keys.
+      {
+        begin: /\(/,
+        end: /\)/,
+        contains: [
+          ...VALUES,
+          LITERAL_CHAR,
+          NODE_CONSTANT,
+          NODE
+        ]
+      },
       ...COMMENTS,
       ...VALUES,
       LITERAL_CHAR,
@@ -180,6 +192,8 @@ export default function(hljs) {
   return {
     name: 'NLP++',
     aliases: [ 'nlp' ],
+    // node names may use letters from any script (\p{L})
+    unicodeRegex: true,
     contains: [
       ...COMMENTS,
       REGION,

@@ -21,8 +21,10 @@ function nlpplusKbb(hljs) {
       contains: [ hljs.BACKSLASH_ESCAPE ]
     },
     {
+      // the reader stores a value as a number only when it is all digits;
+      // -5 and 1.5 are strings
       scope: 'number',
-      match: /(?<=[=[,]\s*)-?\d+(?:\.\d+)?(?=[\s,\]]|$)/
+      match: /(?<=[=[,]\s*)\d+(?=[\s,\]]|$)/
     },
     {
       scope: 'string',
@@ -44,11 +46,12 @@ function nlpplusKbb(hljs) {
       // hierarchy: anything indented is a concept below another.
       {
         scope: 'section',
-        match: /^[^\s#:/][^:\n]*?(?=:|$)/
+        // a # ends the name: the rest of the line is a comment
+        match: /^[^\s#:/](?:[^:#\n]*[^\s:#])?/
       },
       {
         scope: 'title.class',
-        match: /(?<=^[ \t]+)[^\s#:/][^:\n]*?(?=:|$)/
+        match: /(?<=^[ \t]+)[^\s#:/](?:[^:#\n]*[^\s:#])?/
       },
       {
         scope: 'attr',
