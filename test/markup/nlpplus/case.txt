@@ -1,0 +1,12 @@
+@DECL
+AddWord(L("w")) { return addword(L("w")); }
+@@DECL
+@CODE
+L("n") = strlength("abc");
+L("s") = StrLength("abc");
+L("j") = LJ(L("n"), 5);
+IF (L("n")) { push(L("arr"), 1); } ELSE { refind("a+", L("x")); }
+@@CODE
+@POSTCODE
+G("x") = 1;
+@@POSTCODE

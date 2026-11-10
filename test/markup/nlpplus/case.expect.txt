@@ -1,0 +1,12 @@
+<span class="hljs-meta">@DECL</span>
+<span class="hljs-title function_ invoke__">AddWord</span>(<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;w&quot;</span>)) { <span class="hljs-keyword">return</span> <span class="hljs-built_in">addword</span>(<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;w&quot;</span>)); }
+<span class="hljs-meta">@@DECL</span>
+<span class="hljs-meta">@CODE</span>
+<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;n&quot;</span>) = <span class="hljs-built_in">strlength</span>(<span class="hljs-string">&quot;abc&quot;</span>);
+<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;s&quot;</span>) = <span class="hljs-title function_ invoke__">StrLength</span>(<span class="hljs-string">&quot;abc&quot;</span>);
+<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;j&quot;</span>) = <span class="hljs-built_in">LJ</span>(<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;n&quot;</span>), <span class="hljs-number">5</span>);
+<span class="hljs-keyword">IF</span> (<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;n&quot;</span>)) { <span class="hljs-built_in">push</span>(<span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;arr&quot;</span>), <span class="hljs-number">1</span>); } <span class="hljs-keyword">ELSE</span> { <span class="hljs-built_in">refind</span>(<span class="hljs-string">&quot;a+&quot;</span>, <span class="hljs-variable language_">L</span>(<span class="hljs-string">&quot;x&quot;</span>)); }
+<span class="hljs-meta">@@CODE</span>
+<span class="hljs-meta">@POSTCODE</span>
+<span class="hljs-variable language_">G</span>(<span class="hljs-string">&quot;x&quot;</span>) = <span class="hljs-number">1</span>;
+<span class="hljs-meta">@@POSTCODE</span>
