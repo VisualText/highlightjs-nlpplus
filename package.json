@@ -39,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/VisualText/highlightjs-nlpplus.git"
+    "url": "git+https://github.com/VisualText/highlightjs-nlpplus.git"
   },
   "keywords": [
     "highlight.js",
