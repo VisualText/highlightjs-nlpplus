@@ -47,7 +47,8 @@ Load the grammar after highlight.js. The CDN build registers itself.
 From a CDN:
 
 ```html
-<script src="https://unpkg.com/highlightjs-nlpplus/dist/nlpplus.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highlightjs-nlpplus@1.2.0/dist/nlpplus.min.js"></script>
+<!-- the other formats: dist/nlpplus-dict.min.js, nlpplus-kbb.min.js, nlpplus-seq.min.js, nlpplus-tree.min.js -->
 ```
 
 Then mark NLP++ code blocks:
